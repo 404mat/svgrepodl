@@ -1,9 +1,9 @@
-const axios = require('axios');
-const cheerio = require('cheerio');
-const fs = require('fs');
-const path = require('path');
-const mkdirp = require('mkdirp');
-const ProgressBar = require('progress');
+import axios from 'axios';
+import * as cheerio from 'cheerio';
+import fs from 'fs';
+import path from 'path';
+import * as mkdirp from 'mkdirp';
+import ProgressBar from 'progress';
 
 class DownloadException extends Error {}
 
@@ -12,22 +12,22 @@ class DownloadException extends Error {}
  * @param {string} [category=all] - The category to list.
  */
 async function listCollections(category = 'all') {
-    const url = `https://www.svgrepo.com/collections/${category}/`;
-    const { data } = await axios.get(url);
-    const soup = cheerio.load(data);
-    const numPage = await getPage(soup);
-    
-    for (let page = 1; page <= numPage; page++) {
-        console.error(`page ${page}/${numPage}`);
-        const pageUrl = page > 1 ? `${url}${page}` : url;
-        const { data: pageData } = await axios.get(pageUrl);
-        const pageSoup = cheerio.load(pageData);
-        const allLinks = pageSoup('div[class^="style_Collection__"] a')
-        .map((_, a) => pageSoup(a).attr('href'))
-        .get();
-        
-        console.log(allLinks.join('\n'));
-    }
+  const url = `https://www.svgrepo.com/collections/${category}/`;
+  const { data } = await axios.get(url);
+  const soup = cheerio.load(data);
+  const numPage = await getPage(soup);
+
+  for (let page = 1; page <= numPage; page++) {
+    console.error(`page ${page}/${numPage}`);
+    const pageUrl = page > 1 ? `${url}${page}` : url;
+    const { data: pageData } = await axios.get(pageUrl);
+    const pageSoup = cheerio.load(pageData);
+    const allLinks = pageSoup('div[class^="style_Collection__"] a')
+      .map((_, a) => pageSoup(a).attr('href'))
+      .get();
+
+    console.log(allLinks.join('\n'));
+  }
 }
 
 /**
@@ -75,7 +75,6 @@ async function downloadItems(allLinks, downloadPath, bar) {
   }
 }
 
-
 /**
  * Downloads all the icons from the given URL and saves them to the given
  * directory.
@@ -86,7 +85,7 @@ async function downloadItems(allLinks, downloadPath, bar) {
  *   them.
  * @param {string} [collection=''] - The collection name to prefix the list with.
  */
-async function downloader(url, outputDirectoryPath, onlyList = false, collection = '') {
+export async function downloader(url, outputDirectoryPath, onlyList = false, collection = '') {
   const isSearch = url.includes('/vectors/');
 
   // fetching raw HTML data
@@ -114,14 +113,14 @@ async function downloader(url, outputDirectoryPath, onlyList = false, collection
 
     // user only wants to have a list of icons
     if (onlyList) {
-      console.log(allLinks.map(link => `${collection}\t${link}`).join('\n'));
+      console.log(allLinks.map((link) => `${collection}\t${link}`).join('\n'));
       continue;
     }
 
     // creating progress bar for user display
     const bar = new ProgressBar(`📥 Icons URLs page ${page}/${numPage} [:bar] :percent :etas`, {
       total: allLinks.length,
-      width: 40
+      width: 40,
     });
 
     await downloadItems(allLinks, outputDirectoryPath, bar);
@@ -132,6 +131,5 @@ async function downloader(url, outputDirectoryPath, onlyList = false, collection
   }
 }
 
-
-// Example usage:
-downloader('https://www.svgrepo.com/collection/iconship-interface-icons/', './download', false);
+// Example usage for local developemnt :
+//downloader('https://www.svgrepo.com/collection/iconship-interface-icons/', './download', false);
