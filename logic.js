@@ -4,6 +4,8 @@ import fs from 'fs';
 import path from 'path';
 import * as mkdirp from 'mkdirp';
 import ProgressBar from 'progress';
+import * as p from '@clack/prompts';
+import { checkUserCancelled } from './utilities.js';
 
 class DownloadException extends Error {}
 
@@ -94,6 +96,22 @@ export async function downloader(url, outputDirectoryPath, onlyList = false, col
   const soup = cheerio.load(rawData);
   // get total number of pages
   const numPage = isSearch ? 99 : await getPage(soup);
+
+  // check if directory exists then create
+  if (fs.existsSync(outputDirectoryPath)) {
+    const continueOperation = await p.confirm({
+      message: `Directory ${outputDirectoryPath} already exists, and will be erased. Do you want to continue ?`,
+    });
+    checkUserCancelled(continueOperation);
+    if (!continueOperation) {
+      p.outro('Aborted ! ❌');
+      process.exit(0);
+    }
+
+    // remove existing directory
+    fs.rmSync(outputDirectoryPath, { recursive: true, force: true });
+  }
+
   // create output directory
   mkdirp.sync(outputDirectoryPath);
 
@@ -118,16 +136,12 @@ export async function downloader(url, outputDirectoryPath, onlyList = false, col
     }
 
     // creating progress bar for user display
-    const bar = new ProgressBar(`📥 Icons URLs page ${page}/${numPage} [:bar] :percent :etas`, {
+    const bar = new ProgressBar(`📥 Collection on page ${page}/${numPage} [:bar] :percent :etas`, {
       total: allLinks.length,
       width: 40,
     });
 
     await downloadItems(allLinks, outputDirectoryPath, bar);
-  }
-
-  if (!onlyList) {
-    console.log('🎉 Finished');
   }
 }
 

@@ -1,11 +1,16 @@
 import * as p from '@clack/prompts';
 import isValidPath from 'is-valid-path';
-import { checkUrlIsValid, getCollectionNameAsWordsArray } from './utilities.js';
+import { checkUrlIsValid, getCollectionNameAsWordsArray, checkUserCancelled } from './utilities.js';
 import * as logic from './logic.js';
+import pc from 'picocolors';
 
 async function main() {
   p.intro(
-    'Welcome to SVG Repo Downloader CLI - a command-line tool to download SVG icons from https://www.svgrepo.com/',
+    pc.bgCyan(
+      pc.black(
+        `Download SVGs from SVG Repo ${pc.italic('(https://www.svgrepo.com/)')}  in a ${pc.bold('CLI')} !`,
+      ),
+    ),
   );
 
   // user input : link to collection
@@ -18,6 +23,7 @@ async function main() {
       }
     },
   });
+  checkUserCancelled(url);
 
   // user input : output directory
   const outputDirectoryPath = await p.text({
@@ -30,11 +36,23 @@ async function main() {
       }
     },
   });
+  checkUserCancelled(outputDirectoryPath);
 
   const folderName = getCollectionNameAsWordsArray(url);
-  console.log(`Folder name: ${folderName}`);
 
-  await logic.downloader(url, outputDirectoryPath ? outputDirectoryPath : './tmp');
+  const confirmContinue = await p.confirm({
+    message: `The icons will be downloaded to the folder '${folderName}' in ${outputDirectoryPath || 'the current directory'}. Is it correct ?`,
+  });
+  checkUserCancelled(confirmContinue);
+
+  if (!confirmContinue) {
+    p.outro('Aborted ! ❌');
+    return;
+  }
+
+  await logic.downloader(url, outputDirectoryPath || folderName);
+
+  p.outro(pc.bgCyan(pc.black('Done ! ✅')));
 }
 
 main().catch((err) => console.error(err.stack));

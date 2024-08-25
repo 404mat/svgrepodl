@@ -1,5 +1,14 @@
+import * as p from '@clack/prompts';
+
 export function checkUrlIsValid(url) {
   return /^(https?:\/\/)?(www\.)?svgrepo\.com\/(collection|vectors)\/.+/.test(url);
+}
+
+export function checkUserCancelled(value) {
+  if (p.isCancel(value)) {
+    console.log('Aborted ! ❌');
+    process.exit(0);
+  }
 }
 
 export function getCollectionNameAsWordsArray(url, typeOfPackage = 'collection') {
@@ -11,7 +20,7 @@ export function getCollectionNameAsWordsArray(url, typeOfPackage = 'collection')
   const startIndex = pathname.indexOf(typeOfPackage);
   if (startIndex === -1) {
     // segment is not found, return empty array
-    return [];
+    return '';
   }
 
   // Extract the part of the pathname after the segment
@@ -19,5 +28,5 @@ export function getCollectionNameAsWordsArray(url, typeOfPackage = 'collection')
   const collectionSlug = partAfterSegment.replace(/\\/g, '').replace(/\//g, '');
   const collectionAsPhrase = collectionSlug.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase());
 
-  return collectionAsPhrase ? collectionAsPhrase : collectionSlug;
+  return collectionAsPhrase || collectionSlug;
 }
