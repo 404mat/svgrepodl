@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import * as p from '@clack/prompts';
 import isValidPath from 'is-valid-path';
 import { checkUrlIsValid, getCollectionNameAsWordsArray, checkUserCancelled } from './utilities.js';

@@ -1,20 +1,9 @@
 {
   "name": "svgrepodl",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Download from SVGRepo on your computer",
-  "main": "index.js",
-  "type": "module",
-  "scripts": {
-    "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/404mat/svgrepodl"
-  },
-  "bin": {
-    "svgrepodl": "./index.js"
-  },
+  "author": "404mat",
+  "license": "Apache-2.0",
   "keywords": [
     "svgrepo",
     "svg",
@@ -22,8 +11,22 @@
     "download",
     "svgrepodl"
   ],
-  "author": "404mat",
-  "license": "Apache-2.0",
+  "bin": {
+    "svgrepodl": "./index.js"
+  },
+  "files": [
+    "index.js",
+    "utilities.js",
+    "logic.js"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/404mat/svgrepodl"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "dependencies": {
     "@clack/prompts": "^0.7.0",
     "axios": "^1.7.5",
