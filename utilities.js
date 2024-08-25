@@ -16,9 +16,8 @@ export function getCollectionNameAsWordsArray(url, typeOfPackage = 'collection')
 
   // Extract the part of the pathname after the segment
   const partAfterSegment = pathname.substring(startIndex + typeOfPackage.length);
+  const collectionSlug = partAfterSegment.replace(/\\/g, '').replace(/\//g, '');
+  const collectionAsPhrase = collectionSlug.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase());
 
-  // Split the remaining part into words based on '/'
-  const words = partAfterSegment.split('/')[0].split('-');
-
-  return words;
+  return collectionAsPhrase ? collectionAsPhrase : collectionSlug;
 }
