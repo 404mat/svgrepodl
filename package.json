@@ -1,16 +1,29 @@
 {
-  "name": "svgrepo-dl",
-  "version": "1.0.0",
+  "name": "svgrepodl",
+  "version": "1.0.1",
+  "description": "Download from SVGRepo on your computer",
   "main": "index.js",
   "type": "module",
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/404mat/svgrepodl"
+  },
+  "bin": {
+    "svgrepodl": "./index.js"
+  },
+  "keywords": [
+    "svgrepo",
+    "svg",
+    "icons",
+    "download",
+    "svgrepodl"
+  ],
+  "author": "404mat",
+  "license": "Apache-2.0",
   "dependencies": {
     "@clack/prompts": "^0.7.0",
     "axios": "^1.7.5",
