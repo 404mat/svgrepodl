@@ -1,6 +1,6 @@
 import * as p from '@clack/prompts';
 
-export function checkUrlIsValid(url) {
+export function checkCollectionUrlIsValid(url) {
   return /^(https?:\/\/)?(www\.)?svgrepo\.com\/(collection|vectors)\/.+/.test(url);
 }
 

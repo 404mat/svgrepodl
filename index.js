@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
 import * as p from '@clack/prompts';
-import validPath from 'valid-path';
+import isValidPath from 'is-valid-path';
 import {
-  checkUrlIsValid,
+  checkCollectionUrlIsValid,
   getCollectionNameAsWordsArray,
   checkUserCancelled,
   sanitizePath,
@@ -25,7 +25,7 @@ async function main() {
     message: 'Enter the link to the icons collection:',
     placeholder: 'URL to the collection',
     validate(value) {
-      if (!checkUrlIsValid(value)) {
+      if (!checkCollectionUrlIsValid(value)) {
         return 'This URL is not an SVG Repo URL ! ❌';
       }
     },
@@ -38,8 +38,7 @@ async function main() {
     placeholder:
       'Leave empty to save in the current directory. The name of the directory will be the collection name.',
     validate(value) {
-      const pathCheck = validPath(sanitizePath(value));
-      if (!pathCheck.valid) {
+      if (!isValidPath(sanitizePath(value))) {
         console.log(pathCheck);
         return 'This path is not valid ! ❌';
       }
@@ -48,9 +47,10 @@ async function main() {
   checkUserCancelled(outputDirectoryPath);
 
   const folderName = getCollectionNameAsWordsArray(url);
+  const sanitisedPath = sanitizePath(outputDirectoryPath);
 
   const confirmContinue = await p.confirm({
-    message: `The icons will be downloaded to the folder '${folderName}' in ${outputDirectoryPath || 'the current directory'}. Is it correct ?`,
+    message: `The icons will be downloaded to the folder '${folderName}' in ${sanitisedPath || 'the current directory'}. Is it correct ?`,
   });
   checkUserCancelled(confirmContinue);
 
@@ -59,7 +59,7 @@ async function main() {
     return;
   }
 
-  await logic.downloader(url, outputDirectoryPath || folderName);
+  await logic.downloader(url, sanitisedPath || folderName);
 
   p.outro(pc.bgCyan(pc.black('Done ! ✅')));
 }

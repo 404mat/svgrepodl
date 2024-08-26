@@ -112,6 +112,7 @@ export async function downloader(url, outputDirectoryPath, onlyList = false, col
     fs.rmSync(outputDirectoryPath, { recursive: true, force: true });
   }
 
+  console.log(outputDirectoryPath);
   // create output directory
   mkdirp.sync(outputDirectoryPath);
 
