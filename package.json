@@ -1,6 +1,6 @@
 {
   "name": "svgrepodl",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Download from SVGRepo on your computer",
   "author": "404mat",
   "license": "Apache-2.0",
@@ -35,7 +35,9 @@
     "is-valid-path": "^0.1.1",
     "mkdirp": "^3.0.1",
     "picocolors": "^1.0.1",
-    "prettier": "^3.3.3",
     "progress": "^2.0.3"
+  },
+  "devDependencies": {
+    "prettier": "^3.3.3"
   }
 }
