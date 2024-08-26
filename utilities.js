@@ -4,6 +4,15 @@ export function checkUrlIsValid(url) {
   return /^(https?:\/\/)?(www\.)?svgrepo\.com\/(collection|vectors)\/.+/.test(url);
 }
 
+export function sanitizePath(path) {
+  const sanitisedPath = path
+    // remove double backslashes
+    .replace(/\\\\/g, '\\')
+    // remove double quotes
+    .replace(/^"(.*)"$/, '$1');
+  return sanitisedPath;
+}
+
 export function checkUserCancelled(value) {
   if (p.isCancel(value)) {
     console.log('Aborted ! ❌');

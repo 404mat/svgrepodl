@@ -32,10 +32,10 @@
     "@clack/prompts": "^0.7.0",
     "axios": "^1.7.5",
     "cheerio": "^1.0.0",
-    "is-valid-path": "^0.1.1",
     "mkdirp": "^3.0.1",
     "picocolors": "^1.0.1",
     "prettier": "^3.3.3",
-    "progress": "^2.0.3"
+    "progress": "^2.0.3",
+    "valid-path": "^2.1.0"
   }
 }

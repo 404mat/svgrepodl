@@ -1,8 +1,13 @@
 #!/usr/bin/env node
 
 import * as p from '@clack/prompts';
-import isValidPath from 'is-valid-path';
-import { checkUrlIsValid, getCollectionNameAsWordsArray, checkUserCancelled } from './utilities.js';
+import validPath from 'valid-path';
+import {
+  checkUrlIsValid,
+  getCollectionNameAsWordsArray,
+  checkUserCancelled,
+  sanitizePath,
+} from './utilities.js';
 import * as logic from './logic.js';
 import pc from 'picocolors';
 
@@ -32,8 +37,10 @@ async function main() {
     message: 'Enter the directory to save the icons to:',
     placeholder:
       'Leave empty to save in the current directory. The name of the directory will be the collection name.',
-    validete(value) {
-      if (!isValidPath(value)) {
+    validate(value) {
+      const pathCheck = validPath(sanitizePath(value));
+      if (!pathCheck.valid) {
+        console.log(pathCheck);
         return 'This path is not valid ! ❌';
       }
     },
