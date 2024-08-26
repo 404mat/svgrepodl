@@ -112,7 +112,6 @@ export async function downloader(url, outputDirectoryPath, onlyList = false, col
     fs.rmSync(outputDirectoryPath, { recursive: true, force: true });
   }
 
-  console.log(outputDirectoryPath);
   // create output directory
   mkdirp.sync(outputDirectoryPath);
 
@@ -145,6 +144,3 @@ export async function downloader(url, outputDirectoryPath, onlyList = false, col
     await downloadItems(allLinks, outputDirectoryPath, bar);
   }
 }
-
-// Example usage for local developemnt :
-//downloader('https://www.svgrepo.com/collection/iconship-interface-icons/', './download', false);

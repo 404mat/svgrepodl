@@ -4,12 +4,18 @@ export function checkCollectionUrlIsValid(url) {
   return /^(https?:\/\/)?(www\.)?svgrepo\.com\/(collection|vectors)\/.+/.test(url);
 }
 
+export function pathHasSpaces(path) {
+  return /\s/.test(path);
+}
+
 export function sanitizePath(path) {
   const sanitisedPath = path
     // remove double backslashes
     .replace(/\\\\/g, '\\')
-    // remove double quotes
-    .replace(/^"(.*)"$/, '$1');
+    // remove double quotes around the path
+    .replace(/^"(.*)"$/, '$1')
+    // remove whitespace around the path
+    .replace(/^\s+|\s+$/g, '');
   return sanitisedPath;
 }
 

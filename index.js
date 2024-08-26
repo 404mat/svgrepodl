@@ -7,6 +7,7 @@ import {
   getCollectionNameAsWordsArray,
   checkUserCancelled,
   sanitizePath,
+  pathHasSpaces,
 } from './utilities.js';
 import * as logic from './logic.js';
 import pc from 'picocolors';
@@ -38,9 +39,12 @@ async function main() {
     placeholder:
       'Leave empty to save in the current directory. The name of the directory will be the collection name.',
     validate(value) {
-      if (!isValidPath(sanitizePath(value))) {
-        console.log(pathCheck);
+      const sanitisedValueToBeCHecked = sanitizePath(value);
+      if (!isValidPath(sanitisedValueToBeCHecked)) {
         return 'This path is not valid ! ❌';
+      }
+      if (pathHasSpaces(sanitisedValueToBeCHecked)) {
+        return 'This CLI does not currently support spaces in the path. You can instead navigate to the directory and run the command again, or manually use quotes in the right places.';
       }
     },
   });
