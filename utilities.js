@@ -9,6 +9,10 @@ export function pathHasSpaces(path) {
 }
 
 export function sanitizePath(path) {
+  if (!path) {
+    return path;
+  }
+
   const sanitisedPath = path
     // remove double backslashes
     .replace(/\\\\/g, '\\')

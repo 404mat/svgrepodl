@@ -44,7 +44,7 @@ async function main() {
         return 'This path is not valid ! ❌';
       }
       if (pathHasSpaces(sanitisedValueToBeCHecked)) {
-        return 'This CLI does not currently support spaces in the path. You can instead navigate to the directory and run the command again, or manually use quotes in the right places.';
+        return 'This CLI does not currently support spaces in the path. Instead, navigate to the directory and run the command again leaving an empty path, or manually escape the path.';
       }
     },
   });
